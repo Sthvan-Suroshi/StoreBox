@@ -8,12 +8,12 @@ import * as schema from "./schema";
  */
 
 const globalForDb = globalThis as unknown as { conn: Pool | undefined };
-
+console.log("printing envs ", env.SINGLESTORE_HOST, env.SINGLESTORE_PORT);
 const conn =
   globalForDb.conn ??
   createPool({
     host: env.SINGLESTORE_HOST,
-    port: parseInt(env.SINGLESTORE_PORT),
+    port: env.SINGLESTORE_PORT,
     user: env.SINGLESTORE_USER,
     password: env.SINGLESTORE_PASS,
     database: env.SINGLESTORE_DB_NAME,
