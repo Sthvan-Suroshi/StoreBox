@@ -1,16 +1,15 @@
-import { type Config } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit";
+import { env } from "~/env";
 
-import { env } from "~/env"; // Make sure this path is correct
-
-export default {
-  schema: "./src/server/db/schema.ts",
+export default defineConfig({
   dialect: "singlestore",
-  tablesFilter: ["StoreBox_*"],
+  schema: "./src/server/db/schema.ts",
   dbCredentials: {
     host: env.SINGLESTORE_HOST,
-    database: env.SINGLESTORE_DB_NAME,
     user: env.SINGLESTORE_USER,
     password: env.SINGLESTORE_PASS,
     port: env.SINGLESTORE_PORT,
+    database: env.SINGLESTORE_DB_NAME,
+    ssl: {},
   },
-} satisfies Config;
+});
