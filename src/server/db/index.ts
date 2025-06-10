@@ -2,13 +2,13 @@ import { createPool, type Pool } from "mysql2/promise";
 
 import { env } from "~/env";
 import * as schema from "./schema";
+import { drizzle } from "drizzle-orm/singlestore";
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR update. Does not create a new connection
  */
 
 const globalForDb = globalThis as unknown as { conn: Pool | undefined };
-console.log("printing envs ", env.SINGLESTORE_HOST, env.SINGLESTORE_PORT);
 const conn =
   globalForDb.conn ??
   createPool({
@@ -28,3 +28,5 @@ if (process.env.NODE_ENV !== "production") {
 conn.addListener("error", (err) => {
   console.error("Database connection error ", err);
 });
+
+export const db = drizzle(conn, { schema });
