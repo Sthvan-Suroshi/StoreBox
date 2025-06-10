@@ -1,8 +1,7 @@
-import type { File, Folder } from "~/lib/mock-data";
 import { FileIcon, Folder as FolderIcon } from "lucide-react";
-import Link from "next/link";
+import type { files, folders } from "~/server/db/schema";
 
-export function FileRow(props: { file: File }) {
+export function FileRow(props: { file: typeof files.$inferSelect }) {
   const { file } = props;
   return (
     <li
@@ -11,14 +10,14 @@ export function FileRow(props: { file: File }) {
     >
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
-          <Link
-            href={file.url} //* we are checking for null or undefined and not "||" falseness
+          <a // <a> tag because we want to repaint the entire new tab
+            href={file.url!} //* we are checking for null or undefined and not "||" falseness
             className="flex items-center text-gray-100 hover:text-blue-400"
             target="_blank"
           >
             <FileIcon className="mr-3" size={20} />
             {file.name}
-          </Link>
+          </a>
         </div>
         <div className="col-span-3 text-gray-400">{"file"}</div>
         <div className="col-span-3 text-gray-400">{file.size}</div>
@@ -28,7 +27,7 @@ export function FileRow(props: { file: File }) {
 }
 
 export function FolderRow(props: {
-  folder: Folder;
+  folder: typeof folders.$inferSelect;
   handleFolderClick: () => void;
 }) {
   const { folder, handleFolderClick } = props;

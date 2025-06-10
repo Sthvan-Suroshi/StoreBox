@@ -1,3 +1,8 @@
+{
+  /* If anything tries to import this module into a client-side component, throw an error.*/
+}
+
+import "server-only";
 import {
   int,
   text,
