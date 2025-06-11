@@ -5,8 +5,6 @@ import {
 } from "~/server/db/schema";
 import StoreBoxContents from "./storebox-contents";
 
-export default async function GoogleDriveClone() {
-  const files = await db.select().from(filesSchema);
-  const folders = await db.select().from(foldersSchema);
-  return <StoreBoxContents files={files} folders={folders} />;
+export default async function HomePage() {
+  return <div>Hello</div>;
 }
