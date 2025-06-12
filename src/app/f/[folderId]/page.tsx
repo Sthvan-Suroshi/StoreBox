@@ -1,7 +1,7 @@
 //* Always try to separate the data layer from the react code and logic.
 
-import StoreBoxContents from "~/app/storebox-contents";
 import { QUERIES } from "~/server/db/queries"; // queries can keep re-running and we don't care about, while mutations are only run once coz they mutate things.
+import StoreBoxContents from "./storebox-contents";
 
 export default async function GoogleDriveClone(props: {
   params: Promise<{ folderId: string }>;
