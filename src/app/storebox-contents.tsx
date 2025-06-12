@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Upload, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
@@ -13,9 +12,8 @@ export default function StoreBoxContents(props: {
   files: (typeof files_table.$inferSelect)[];
   folders: (typeof folders_table.$inferSelect)[];
   parents: (typeof folders_table.$inferSelect)[];
+  currentFolderId: number;
 }) {
-  const [currentFolder, setCurrentFolder] = useState<number>(1);
-
   const navigate = useRouter();
 
   return (
@@ -30,7 +28,7 @@ export default function StoreBoxContents(props: {
               <div key={folder.id} className="flex items-center">
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Link
-                  href={`/${folder.id}`}
+                  href={`/f/${folder.id}`}
                   className="text-gray-300 hover:text-black"
                 >
                   {folder.name}
@@ -68,9 +66,12 @@ export default function StoreBoxContents(props: {
         <div className="mt-4">
           <UploadButton
             endpoint="imageUploader"
-            onClientUploadComplete={() => {
+            onClientUploadComplete={() =>
               // refreshes the page and revalidates the data to show updated state,
-              navigate.refresh();
+              navigate.refresh()
+            }
+            input={{
+              folderId: props.currentFolderId,
             }}
           />
         </div>

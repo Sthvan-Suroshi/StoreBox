@@ -1,35 +1,41 @@
 import { db } from "~/server/db";
-import { mockFiles, mockFolders } from "~/lib/mock-data";
-import { files_table, folders_table } from "~/server/db/schema";
+import { mockFolders } from "~/lib/mock-data";
+import { folders_table } from "~/server/db/schema";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Sandbox() {
+export default async function Sandbox() {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 bg-zinc-400">
-      <h1>Sandbox seed function</h1>
+      <h1 className="text-semibold text-3xl">Sandbox seed function</h1>
       <form
         action={async () => {
           "use server";
+          const user = await auth();
 
-          const folderInsert = await db.insert(folders_table).values(
-            mockFolders.map((folder, index) => ({
-              id: index + 1,
-              name: folder.name,
-              parent: index !== 0 ? 1 : null,
-            })),
-          );
+          if (!user.userId) {
+            throw new Error("Unauthorized");
+          }
 
-          const fileInsert = await db.insert(files_table).values(
-            mockFiles.map((file, index) => ({
-              id: index + 1,
-              name: file.name,
-              size: 5000,
-              url: file.url,
-              parent: (index % 3) + 1,
-            })),
-          );
+          const rootFolder = await db
+            .insert(folders_table)
+            .values({
+              name: "root",
+              ownerId: user.userId,
+              parent: null,
+            })
+            .$returningId();
 
-          console.log("folderInsert\n", folderInsert);
-          console.log("fileInsert", fileInsert);
+          const insertableFolders = mockFolders.map((folder) => ({
+            name: folder.name,
+            ownerId: user.userId,
+            parent: rootFolder[0]!.id,
+          }));
+
+          const uploadedFolders = await db
+            .insert(folders_table)
+            .values(insertableFolders);
+
+          console.log("uploaded folders ", uploadedFolders);
         }}
       >
         <button
