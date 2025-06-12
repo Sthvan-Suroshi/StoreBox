@@ -65,10 +65,15 @@ export default function StoreBoxContents(props: {
             ))}
           </ul>
         </div>
-        <UploadButton endpoint="imageUploader" onClientUploadComplete={()=>{
-          // refreshes the page and revalidates the data to show updated state, 
-          navigate.refresh();
-        }} />
+        <div className="mt-4">
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={() => {
+              // refreshes the page and revalidates the data to show updated state,
+              navigate.refresh();
+            }}
+          />
+        </div>
       </div>
     </div>
   );
