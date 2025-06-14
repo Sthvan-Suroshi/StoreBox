@@ -80,4 +80,30 @@ export const MUTATIONS = {
       ownerId: input.userId,
     });
   },
+
+  onboardUser: async function (userId: string) {
+    const rootFolder = await db
+      .insert(foldersSchema)
+      .values({ name: "root", ownerId: userId, parent: null })
+      .$returningId();
+
+    const rootFolderId = rootFolder[0]?.id;
+
+    if (!rootFolderId) {
+      throw new Error("Root folder not created");
+    }
+    await db.insert(foldersSchema).values({
+      name: "Documents",
+      ownerId: userId,
+      parent: rootFolderId,
+    });
+
+    await db.insert(foldersSchema).values({
+      name: "Images",
+      ownerId: userId,
+      parent: rootFolderId,
+    });
+
+    return rootFolderId;
+  },
 };
