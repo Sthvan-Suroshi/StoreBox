@@ -3,7 +3,7 @@
 import { QUERIES } from "~/server/db/queries"; // queries can keep re-running and we don't care about, while mutations are only run once coz they mutate things.
 import StoreBoxContents from "./storebox-contents";
 
-export default async function GoogleDriveClone(props: {
+export default async function StoreBox(props: {
   params: Promise<{ folderId: string }>;
 }) {
   const params = await props.params; //indicates the nextjs that this is dynamic route and not to serve static files from cache.

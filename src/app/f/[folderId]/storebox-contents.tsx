@@ -21,7 +21,7 @@ export default function StoreBoxContents(props: {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href={"/f/1"} className="mr-2 text-gray-300 hover:text-black">
+            <Link href={"/"} className="mr-2 text-gray-300 hover:text-black">
               My Drive
             </Link>
             {props.parents.map((folder, index) => (
@@ -49,8 +49,9 @@ export default function StoreBoxContents(props: {
           <div className="border-b border-gray-700 px-6 py-4">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
               <div className="col-span-6">Name</div>
-              <div className="col-span-3">Type</div>
+              <div className="col-span-2">Type</div>
               <div className="col-span-3">Size</div>
+              <div className="col-span-1"></div>
             </div>
           </div>
           <ul>
