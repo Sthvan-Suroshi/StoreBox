@@ -1,0 +1,45 @@
+"use server";
+
+import { and, eq } from "drizzle-orm";
+import { db } from "./db";
+import { files_table } from "./db/schema";
+import { auth } from "@clerk/nextjs/server";
+import { UTApi } from "uploadthing/server";
+
+{
+  //* whenever we see use server on top of the component, use it with caution. When we import this, it means nextjs is treating them as REST APIs points that can be hit by users on different page
+  //* Every export in here is a endpoint. TREAT IT CAREFULLY
+}
+
+const utapi = new UTApi();
+
+export async function deleteFile(fileId: number) {
+  const session = await auth();
+
+  if (!session.userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const [file] = await db
+    .select()
+    .from(files_table)
+    .where(
+      and(eq(files_table.id, fileId), eq(files_table.ownerId, session.userId)),
+    );
+
+  if (!file) {
+    throw new Error("File not found");
+  }
+
+  const utapiResult = await utapi.deleteFiles([
+    file.url?.replace("https://c81ms6pp71.ufs.sh/f/", "")!,
+  ]);
+
+  console.log(utapiResult);
+
+  const deletedFile = await db
+    .delete(files_table)
+    .where(eq(files_table.id, fileId));
+
+  return { succes: true };
+}
