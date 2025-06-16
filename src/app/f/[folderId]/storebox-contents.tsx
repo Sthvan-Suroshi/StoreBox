@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, PlusCircle } from "lucide-react";
+import { ChevronRight, Plus, PlusCircle } from "lucide-react";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
@@ -31,7 +31,6 @@ export default function StoreBoxContents(props: {
 }) {
   const navigate = useRouter();
   const [open, setOpen] = useState(false);
-  const [folderName, setFolderName] = useState("");
 
   const handleCreateFolder = () => {
     setOpen(true);
@@ -60,10 +59,11 @@ export default function StoreBoxContents(props: {
           <div className="flex gap-3">
             <Button
               variant={"ghost"}
-              className="hover:bg-gray-700"
+              className="border hover:bg-gray-700 hover:text-gray-100"
               onClick={handleCreateFolder}
             >
-              <PlusCircle className="size-6 text-gray-400" />
+              Create Folder
+              <Plus className="size-6 text-gray-400" />
             </Button>
             <SignedOut>
               <SignInButton />
@@ -130,12 +130,16 @@ export default function StoreBoxContents(props: {
                 />
               </div>
               <DialogFooter className="sm:justify-start">
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary">
-                    Cancel
+                <div className="flex gap-3 pt-3">
+                  <DialogClose asChild>
+                    <Button type="button" variant="secondary">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button type="submit" className="bg-[#163464]">
+                    Add
                   </Button>
-                </DialogClose>
-                <Button type="submit">Add</Button>
+                </div>
               </DialogFooter>
             </form>
           </DialogContent>
