@@ -1,12 +1,12 @@
 "use client";
 
-import { ChevronRight, Plus, PlusCircle } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import {
@@ -19,8 +19,6 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { auth } from "@clerk/nextjs/server";
-import { MUTATIONS } from "~/server/db/queries";
 import { createFolder } from "~/server/action";
 
 export default function StoreBoxContents(props: {
@@ -56,7 +54,7 @@ export default function StoreBoxContents(props: {
               </div>
             ))}
           </div>
-          <div className="flex gap-3">
+          <div className="flex items-center justify-center gap-3">
             <Button
               variant={"ghost"}
               className="border hover:bg-gray-700 hover:text-gray-100"
@@ -65,6 +63,16 @@ export default function StoreBoxContents(props: {
               Create Folder
               <Plus className="size-6 text-gray-400" />
             </Button>
+            <UploadButton
+              endpoint="driveUploader"
+              onClientUploadComplete={() =>
+                // refreshes the page and revalidates the data to show updated state,
+                navigate.refresh()
+              }
+              input={{
+                folderId: props.currentFolderId,
+              }}
+            />
             <SignedOut>
               <SignInButton />
             </SignedOut>
@@ -92,18 +100,7 @@ export default function StoreBoxContents(props: {
             ))}
           </ul>
         </div>
-        <div className="mt-4">
-          <UploadButton
-            endpoint="driveUploader"
-            onClientUploadComplete={() =>
-              // refreshes the page and revalidates the data to show updated state,
-              navigate.refresh()
-            }
-            input={{
-              folderId: props.currentFolderId,
-            }}
-          />
-        </div>
+        <div className="mt-4"></div>
       </div>
 
       {open && (

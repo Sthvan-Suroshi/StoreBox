@@ -23,7 +23,7 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
           </a>
         </div>
         <div className="col-span-2 text-gray-400">{"File"}</div>
-        <div className="col-span-2 text-gray-400">{file.size}</div>
+        <div className="col-span-2 text-gray-400">{file.size} B</div>
         <div className="col-span-1 text-gray-400">
           <Button
             variant="ghost"
