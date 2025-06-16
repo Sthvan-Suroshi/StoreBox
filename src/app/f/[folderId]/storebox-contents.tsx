@@ -1,12 +1,27 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, PlusCircle } from "lucide-react";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { UploadButton } from "~/utils/uploadthing";
-import { useRouter } from "next/navigation";
+import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
+import { redirect, useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { auth } from "@clerk/nextjs/server";
+import { MUTATIONS } from "~/server/db/queries";
+import { createFolder } from "~/server/action";
 
 export default function StoreBoxContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -15,6 +30,12 @@ export default function StoreBoxContents(props: {
   currentFolderId: number;
 }) {
   const navigate = useRouter();
+  const [open, setOpen] = useState(false);
+  const [folderName, setFolderName] = useState("");
+
+  const handleCreateFolder = () => {
+    setOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
@@ -36,7 +57,14 @@ export default function StoreBoxContents(props: {
               </div>
             ))}
           </div>
-          <div>
+          <div className="flex gap-3">
+            <Button
+              variant={"ghost"}
+              className="hover:bg-gray-700"
+              onClick={handleCreateFolder}
+            >
+              <PlusCircle className="size-6 text-gray-400" />
+            </Button>
             <SignedOut>
               <SignInButton />
             </SignedOut>
@@ -77,6 +105,42 @@ export default function StoreBoxContents(props: {
           />
         </div>
       </div>
+
+      {open && (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Add folder name</DialogTitle>
+            </DialogHeader>
+            <form
+              action={async (formData) => {
+                await createFolder(formData);
+                setOpen(false);
+              }}
+            >
+              <div className="grid flex-1 gap-2">
+                <Label htmlFor="folderName" className="sr-only">
+                  Folder Name
+                </Label>
+                <Input id="folderName" name="folderName" type="text" required />
+                <input
+                  type="hidden"
+                  name="currentFolderId"
+                  value={props.currentFolderId}
+                />
+              </div>
+              <DialogFooter className="sm:justify-start">
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button type="submit">Add</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
