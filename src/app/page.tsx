@@ -4,7 +4,14 @@ import { Upload, FolderOpen, Shield, Zap } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+
+  if (session.userId) {
+    console.log(session.userId);
+    redirect("/home");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950">
       <div className="container mx-auto px-4 py-16">

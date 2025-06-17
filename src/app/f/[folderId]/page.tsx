@@ -2,10 +2,18 @@
 
 import { QUERIES } from "~/server/db/queries"; // queries can keep re-running and we don't care about, while mutations are only run once coz they mutate things.
 import StoreBoxContents from "./storebox-contents";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function StoreBox(props: {
   params: Promise<{ folderId: string }>;
 }) {
+  const session = await auth();
+
+  if (!session.userId) {
+    redirect("/sign-in");
+  }
+
   const params = await props.params; //indicates the nextjs that this is dynamic route and not to serve static files from cache.
   const parsedFolderId = parseInt(params.folderId);
 
