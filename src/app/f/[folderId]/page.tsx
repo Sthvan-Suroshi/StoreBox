@@ -29,9 +29,7 @@ export default async function StoreBox(props: {
   ]);
 
   {
-    /* we had an issue where the breadcrumb were in reverse order, so we need to reverse them here to have proper order.
-
-  our instinct would litreally reverse the array using parents.reverse(); but that would reverse the entire original array which might be slow, instead we can use parent.toReversed() which is new in JS. It does not modify the array but creates a new one which is also not a right way to do */
+    /* our instinct would litreally reverse the array using parents.reverse(); but that would reverse the entire original array which might be slow, instead we can use parent.toReversed() which is new in JS. It does not modify the array but creates a new one which is also not a right way to do */
   }
   return (
     <StoreBoxContents
