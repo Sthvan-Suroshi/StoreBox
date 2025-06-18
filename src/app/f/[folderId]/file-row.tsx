@@ -3,13 +3,16 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { deleteFile, deleteFolder } from "~/server/action";
 import type { files_table, folders_table } from "~/server/db/schema";
+import { useTransition } from "react";
 
 export function FileRow(props: { file: typeof files_table.$inferSelect }) {
   const { file } = props;
+  const [isPending, startTransition] = useTransition(); 
+
   return (
     <li
       key={file.id}
-      className="hover:bg-gray-750 border-b border-gray-700 px-6 py-4"
+      className={`hover:bg-gray-750 border-b border-gray-700 px-6 py-4 ${isPending ? "pointer-events-none opacity-30" : ""}`}
     >
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
@@ -27,8 +30,13 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
         <div className="col-span-1 text-gray-400">
           <Button
             variant="ghost"
-            onClick={() => deleteFile(file.id)}
+            onClick={() => {
+              startTransition(() => {
+                deleteFile(file.id);
+              });
+            }}
             aria-label="Delete file"
+            disabled={isPending}
           >
             <Trash2Icon size={16} />
           </Button>
@@ -42,11 +50,12 @@ export function FolderRow(props: {
   folder: typeof folders_table.$inferSelect;
 }) {
   const { folder } = props;
+  const [isPending, startTransition] = useTransition(); // Initialize useTransition
 
   return (
     <li
       key={folder.id}
-      className="hover:bg-gray-750 border-b border-gray-700 px-6 py-4"
+      className={`hover:bg-gray-750 border-b border-gray-700 px-6 py-4 ${isPending ? "pointer-events-none opacity-30" : ""}`}
     >
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
@@ -64,7 +73,12 @@ export function FolderRow(props: {
           <Button
             variant="ghost"
             aria-label="Delete folder"
-            onClick={() => deleteFolder(folder.id)}
+            onClick={() => {
+              startTransition(() => {
+                deleteFolder(folder.id);
+              });
+            }}
+            disabled={isPending} 
           >
             <Trash2Icon size={16} />
           </Button>
