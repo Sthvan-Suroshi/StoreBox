@@ -25,7 +25,7 @@ export const files_table = createTable(
     ownerId: text("owner_id").notNull(),
     name: text("name"),
     size: int("size"),
-    url: text("url"),
+    url: text("url").notNull(),
     parent: bigint("parent", {
       mode: "number",
       unsigned: true,

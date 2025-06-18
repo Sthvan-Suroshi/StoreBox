@@ -36,7 +36,7 @@ export async function deleteFile(fileId: number) {
   }
 
   const utapiResult = await utapi.deleteFiles([
-    file.url?.replace("https://c81ms6pp71.ufs.sh/f/", "")!,
+    file.url.replace("https://c81ms6pp71.ufs.sh/f/", ""),
   ]);
 
   console.log(utapiResult);

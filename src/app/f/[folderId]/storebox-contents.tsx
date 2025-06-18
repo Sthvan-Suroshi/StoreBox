@@ -5,7 +5,7 @@ import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
+import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
@@ -42,7 +42,7 @@ export default function StoreBoxContents(props: {
             <Link href={"/"} className="mr-2 text-gray-300 hover:text-black">
               My Drive
             </Link>
-            {props.parents.map((folder, index) => (
+            {props.parents.map((folder) => (
               <div key={folder.id} className="flex items-center">
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Link
