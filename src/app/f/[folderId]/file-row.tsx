@@ -14,7 +14,7 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
           <a // <a> tag because we want to repaint the entire new tab
-            href={file.url!} //* we are checking for null or undefined and not "||" falseness
+            href={file.url} //* we are checking for null or undefined and not "||" falseness
             className="flex items-center text-gray-100 hover:text-blue-400"
             target="_blank"
           >
