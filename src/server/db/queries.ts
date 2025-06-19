@@ -100,7 +100,7 @@ export const MUTATIONS = {
   onboardUser: async function (userId: string) {
     const rootFolder = await db
       .insert(foldersSchema)
-      .values({ name: "root", ownerId: userId, parent: null })
+      .values({ name: "Root", ownerId: userId, parent: null })
       .$returningId();
 
     const rootFolderId = rootFolder[0]?.id;
