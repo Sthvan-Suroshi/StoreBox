@@ -2,7 +2,7 @@
   /* server only represents that this files cannot be imported in the client component */
 }
 
-import "server-only";
+// import "server-only";
 import {
   int,
   text,
@@ -38,7 +38,7 @@ export const plans_table = createTable(
     storageQuota: bigint("storage_quota", { mode: "number" }).notNull(),
     priceInCents: int("price_in_cents").notNull().default(0),
   },
-  (t) => [],
+  (t) => [index("idx_plans_name").on(t.name)],
 );
 export type DB_Plan = typeof plans_table.$inferSelect;
 
@@ -60,7 +60,7 @@ export const subscriptions_table = createTable(
 export type DB_Subscription = typeof subscriptions_table.$inferSelect;
 
 export const files_table = createTable(
-  "files",
+  "files_table",
   {
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
@@ -80,7 +80,7 @@ export const files_table = createTable(
 export type DB_File = typeof files_table.$inferSelect;
 
 export const folders_table = createTable(
-  "folders",
+  "folders_table",
   {
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
