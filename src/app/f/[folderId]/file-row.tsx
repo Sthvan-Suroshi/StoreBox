@@ -7,7 +7,7 @@ import { useTransition } from "react";
 
 export function FileRow(props: { file: typeof files_table.$inferSelect }) {
   const { file } = props;
-  const [isPending, startTransition] = useTransition(); 
+  const [isPending, startTransition] = useTransition();
 
   return (
     <li
@@ -30,9 +30,9 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
         <div className="col-span-1 text-gray-400">
           <Button
             variant="ghost"
-            onClick={() => {
-              startTransition(() => {
-                deleteFile(file.id);
+            onClick={(): void => {
+              startTransition(async () => {
+                await deleteFile(file.id);
               });
             }}
             aria-label="Delete file"
@@ -74,11 +74,11 @@ export function FolderRow(props: {
             variant="ghost"
             aria-label="Delete folder"
             onClick={() => {
-              startTransition(() => {
-                deleteFolder(folder.id);
+              startTransition(async () => {
+                await deleteFolder(folder.id);
               });
             }}
-            disabled={isPending} 
+            disabled={isPending}
           >
             <Trash2Icon size={16} />
           </Button>
