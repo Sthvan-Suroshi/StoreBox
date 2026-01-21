@@ -39,7 +39,7 @@ export default function StoreBoxContents(props: {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href={"/"} className="mr-2 text-gray-300 hover:text-black">
+            <Link href={"/"} className="mr-2 text-gray-300 hover:text-gray-500">
               My Drive
             </Link>
             {props.parents.map((folder) => (
@@ -47,7 +47,7 @@ export default function StoreBoxContents(props: {
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Link
                   href={`/f/${folder.id}`}
-                  className="text-gray-300 hover:text-black"
+                  className="text-gray-300 hover:text-gray-500"
                 >
                   {folder.name}
                 </Link>
